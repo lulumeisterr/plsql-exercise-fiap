@@ -1,0 +1,46 @@
+O'que é Procedure ?
+
+R: As procedures são blocos anonimos , a unica diferença é que
+blocos anonimos não ficam salvos no servidor , ele não fica compilado e
+quando criamos uma procedure ela passa ter um nome e pode ser chamada
+a qualquer momento.
+
+° Uma Procedure tem vantagens em termos de execução pois ela já está armazenada
+no servidor.
+
+-------------------------------------------------------------------------------------------------
+
+Storep Procedure
+
+
+as Storep Procedure são funções escritas em SQL e ficam no servidor, elas podem retornar ou nao valores para o usuário...
+elas ajudam na performance de consultas ao banco de dados
+
+--------------------------------------------------------------------------------------------------
+
+FUNCTION
+
+Uma function é um bloco PL/SQL muito semelhante a uma procedure. 
+O que podemos entender de início entre esses dois tipos de blocos é que os blocos functions retornam 
+valores e as procedures podem ou não retornar um valor. As functions tem duas características 
+que diferem das procedures, as quais não podemos deixar de tratar:
+
+As functions sempre retornam valores
+Functions são usadas como parte de uma expressão
+
+---------------------------------------------------------------------------------------------------
+
+Declarações Ancoradas
+
+Variáveis ancoradas referem-se ao uso da
+declaração %TYPE. O que o PL/SQL está fazendo
+é ancorar o tipo de dado de uma variável àquele
+de uma outra estrutura de dados, geralmente de uma coluna de uma
+tabela.
+
+-----------------------------------------------------------------------------------------------------
+
+--- Criando uma procedure ---
+
+CREATE OR REPLACE PROCEDURE - SP PARA CRIAÇÃO OU ALTERAÇÃO DO PROCEDURE
+

@@ -1,0 +1,7 @@
+O PL/SQL, Procedural Language extensions to SQL , significado da sigla em inglês, 
+é basicamente uma extensão do SQL para o Oracle. Ela foi vagamente baseada no 
+ADA (Uma variante do Pascal desenvolvido pelo departamento de Defesa do U.S.A.). 
+O PL/SQL inclui comandos semelhantes à outras linguagens, 
+com isso formando uma linguagem poderosa para manipulação de dados.
+
+A SUA PRIMEIRA VERSÃO FOI LANÇADA EM 1991.

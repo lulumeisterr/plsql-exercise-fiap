@@ -1,0 +1,12 @@
+1. Avalie cada uma das declarações a seguir. Determine quais delas não são
+legais e explique por quê.
+
+a. DECLARE v_id NUMBER(4);
+b. DECLARE v_x, v_y, v_z VARCHAR2(10);
+c. DECLARE v_birthdate DATE NOT NULL;
+d. DECLARE v_in_stock BOOLEAN := 1;
+
+1 - CORRETO pois a declaração esta certa
+2 - INCORRENTO POIS NAO SE PODE DECLARAR VARIAS VARIAVEIS SOMENTE UMA
+3 - INCORRENTO DEVE SE ATRIBUIR UM VALOR , E NUNCA COMEÇAR POR NULO
+4 - INCORRETO DEVERIA SER BOOLEAN := TRUE;

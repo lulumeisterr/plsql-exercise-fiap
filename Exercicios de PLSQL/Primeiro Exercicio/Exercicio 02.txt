@@ -1,0 +1,123 @@
+2. Em cada uma das seguintes atribuições, determine o tipo de dados da
+expressão resultante.
+
+/a) v_days_to_go := v_due_date - SYSDATE;
+/b) v_sender := USER || ': ' || TO_CHAR(v_dept_no);
+/c) v_sum := $100,000 + $250,000;
+/d) v_flag := TRUE;
+e) v_n1 := v_n2 > (2 * v_n3);
+/f) v_value := NULL;
+
+
+-----------------------------------------------------------------
+LETRA A
+
+
+
+set SERVEROUTPUT ON;
+
+declare
+
+v_days_to_go NUMBER(5);
+v_due_date date;
+
+
+begin
+
+v_days_to_go := v_due_date - SYSDATE;
+
+DBMS_OUTPUT.PUT_LINE(v_days_to_go);
+
+end;
+
+----------------------------------------------------------------
+
+LETRA B
+
+set SERVEROUTPUT ON;
+
+declare
+
+v_sender varchar(100);
+v_dept_no number(5) := 10;
+
+begin
+
+ v_sender := USER || ' : ' || TO_CHAR(v_dept_no);
+ DBMS_OUTPUT.PUT_LINE(v_sender);
+
+end;
+
+
+---------------------------------------------------
+- LETRA C
+
+v_sum := 100.000 + 250.000;
+
+if v_sum >= 350 then
+DBMS_OUTPUT.PUT_LINE(concat(' Valor : ' , v_sum));
+ELSE
+DBMS_OUTPUT.PUT_LINE('OK');
+END IF;
+
+-----------------------------------------
+
+- LETRA D
+
+DECLARE 
+
+v_flag boolean;
+
+BEGIN
+
+v_flag := true;
+
+END;
+
+-----------------------------------------
+
+- LETRA E
+
+
+
+
+set SERVEROUTPUT ON;
+
+declare
+
+v_n1 BOOLEAN;
+v_n2 DECIMAL(5,2):= 10;
+v_n3 DECIMAL(5,2) := 90;
+v_resultado varchar(100);
+
+begin
+
+v_n1 := v_n2 > (2 * v_n3);
+
+IF v_n1 = true THEN  v_resultado := 'true';
+        DBMS_OUTPUT.PUT_LINE(v_resultado);
+        ELSIF v_n1 = FALSE THEN v_resultado := 'False';
+            DBMS_OUTPUT.PUT_LINE(v_resultado);
+     END IF;
+     
+end;
+
+---------------------------------------------------------
+
+
+- LETRA F
+
+
+set serveroutput on;
+DECLARE
+
+v_value VARCHAR(25);
+
+BEGIN
+
+v_value := null;
+DBMS_OUTPUT.PUT_LINE(concat(' A descrição da variavel é : ' ,v_value));
+
+end;
+
+--------------------------------------------------------

@@ -1,0 +1,16 @@
+Crie um bloco que declare duas variáveis e exiba na tela o conteúdo dessas
+duas variáveis. A primeira variável deve conter o texto “It’s Friday” e a segunda
+variável deve conter o valor numérico 42.
+
+
+set serveroutput on;
+DECLARE
+
+v_texto varchar(100) := 'Its Friday';
+v_numero number(5) := 42;
+
+BEGIN
+
+DBMS_OUTPUT.PUT_LINE('Variavel de texto : ' || v_texto || ' ' || 'Varivael numerica : ' || v_numero);
+
+end;

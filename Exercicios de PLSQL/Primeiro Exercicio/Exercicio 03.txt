@@ -1,0 +1,13 @@
+ Crie um bloco anônimo para a saída da frase "My PL/SQL Block Works" na
+tela.
+
+set serveroutput on;
+DECLARE
+
+BEGIN
+
+DBMS_OUTPUT.PUT_LINE('G_MESSAGE');
+DBMS_OUTPUT.PUT_LINE('----------------------');
+DBMS_OUTPUT.PUT_LINE('My PL/SQL Block Works');
+
+end;
