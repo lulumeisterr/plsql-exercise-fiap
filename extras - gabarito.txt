@@ -1,0 +1,71 @@
+- Use a tabela EMP (script SCOTT, no portal)
+
+1) Crie um bloco PL/SQL anônimo que exiba o nome do funcionário (ENAME) com o salário (SAL) de 5000. Salve o programa com o nome de ex01.sql
+
+SET SERVEROUTPUT ON
+
+DECLARE
+   v_ename emp.ename%TYPE;
+BEGIN
+   SELECT ename INTO v_ename
+     FROM emp
+    WHERE sal = 5000;
+    DBMS_OUTPUT.PUT_LINE('NOME: ' || v_ename);
+END;
+/
+
+2) Altere o programa anterior para exibir o nome do funcionário (ENAME), código de departamento (DEPTNO) e data de contratação (HIREDATE). A data deverá ser exibida no formato DD/MONTH/YYYY. Salve o programa com o nome de ex02.sql
+
+DECLARE
+   v_ename    emp.ename%TYPE;
+   v_deptno   emp.deptno%TYPE;
+   v_hiredate emp.hiredate%TYPE;
+BEGIN
+   SELECT ename, deptno, hiredate INTO v_ename, v_deptno, v_hiredate
+     FROM emp
+    WHERE sal = 5000;
+    DBMS_OUTPUT.PUT_LINE('Nome            : ' || v_ename);
+    DBMS_OUTPUT.PUT_LINE('Departamento    : ' || v_deptno);
+    DBMS_OUTPUT.PUT_LINE('Data Contratação: ' || TO_CHAR(v_hiredate,'fmDD/MONTH/YYYY');
+END;
+/
+
+3) Crie um bloco PL/SQL anônimo para exibir o nome do funcionário (ENAME), salário (SAL) e data de contratação (HIREDATE) do funcionário com o menor salário da empresa. O salário deve ser exibido no formato R$ 9.999,00.
+
+DECLARE
+   v_ename    emp.ename%TYPE;
+   v_sal      emp.sal%TYPE;
+   v_hiredate emp.hiredate%TYPE;
+BEGIN
+   SELECT ename, sal, hiredate INTO v_ename, v_sal, v_hiredate
+     FROM emp
+    WHERE sal = (SELECT MIN(sal) FROM emp);
+    DBMS_OUTPUT.PUT_LINE('Nome            : ' || v_ename);
+    DBMS_OUTPUT.PUT_LINE('Salário         : ' || TO_CHAR(v_sal,'L9G999D00');
+    DBMS_OUTPUT.PUT_LINE('Data Contratação: ' || TO_CHAR(v_hiredate,'fmDD/MONTH/YYYY');
+END;
+/
+
+4) Crie um bloco PL/SQL anônimo para exibir o nome do funcionário (ENAME), salário (SAL) e data de contratação (HIREDATE) do funcionário com o menor (Função MIN) sálário do departamento (DEPTNO) onde trabalha o funcionário com o maior (Função MAX) salário da empresa.
+
+DECLARE
+   v_ename    emp.ename%TYPE;
+   v_sal      emp.sal%TYPE;
+   v_hiredate emp.hiredate%TYPE;
+   v_deptno   emp.deptno%TYPE
+BEGIN
+   SELECT deptno INTO v_deptno
+     FROM emp
+    WHERE sal = (SELECT MAX(sal) FROM emp);
+
+   SELECT ename, sal, hiredate INTO v_ename, v_sal, v_hiredate
+     FROM emp
+    WHERE sal = (SELECT MIN(sal) FROM emp WHERE deptno = v_deptno);
+
+    DBMS_OUTPUT.PUT_LINE('Nome            : ' || v_ename);
+    DBMS_OUTPUT.PUT_LINE('Salário         : ' || TO_CHAR(v_sal,'L9G999D00');
+    DBMS_OUTPUT.PUT_LINE('Data Contratação: ' || TO_CHAR(v_hiredate,'fmDD/MONTH/YYYY');
+END;
+/
+
+5) Crie um bloco PL/SQL anônimo para exibir o nome do funcionário (ENAME), salário (SAL), média salarial da empresa (Função AVG) do funcionário com o maior (Função MAX) salário do departamento (DEPTNO) onde trabalha o funcionário com o menor (Função MIN) salário da empresa. 
