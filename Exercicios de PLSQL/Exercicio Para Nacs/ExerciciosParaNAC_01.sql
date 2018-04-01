@@ -150,12 +150,50 @@ END;
 
 /*
 
-13-) Crie uma função em PL/SQL receba como parâmetro o dia, mês e ano e retorne a data por extenso.
+9 -) Crie uma função em PL/SQL receba como parâmetro o dia, mês e ano e retorne a data por extenso.
 Exemplo: 12/03/2008 – 12 de março de 2008 
 
 */
 
+SET SERVEROUTPUT ON
 
+DECLARE
+V_DATA DATE := TO_DATE('12/03/2008','DD/MM/YYYY');
+BEGIN
+DBMS_OUTPUT.PUT_LINE('DATA : ' || V_DATA);
+END;
 
+--------------------------------------------------------------------------------
+-- EXIBINDO DADOS DE UM VETOR
+ 
+DECLARE
+
+TYPE tVETOR IS VARRAY(5) OF VARCHAR2(255);
+V tVETOR;
+AUX VARCHAR2(255);
+
+BEGIN
+V := tVETOR('Lucas' , 'Maria' , 'Julia' , 'Amanda' , 'JOSE');
+
+FOR I IN 1..5 LOOP
+    FOR J IN 1..4 LOOP
+    
+    IF(V(J)) = (V(J+1)) THEN
+    
+        AUX := V(J+1);
+        V(J) := V(J+1);
+        V(J+1) := AUX;
+        
+        END IF;
+    END LOOP;
+END LOOP;
+
+for i in 1..5 loop
+    DBMS_OUTPUT.PUT_LINE(V(I));
+    END LOOP;
+    
+END;
+
+--------------------------------------------------------------------------------
 
 SELECT * FROM EMP;
