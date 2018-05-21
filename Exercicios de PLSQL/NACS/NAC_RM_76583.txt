@@ -1,0 +1,153 @@
+/*
+
+QUESTAO 1
+
+(2 Pontos) Crie um bloco PL/SQL que leia a tabela de empregados (EMP) e 
+obtenha o nome do empregado (ENAME) e cargo (JOB) dos funcionários.
+Exiba o nome do funcionário em uma linha e o cargo em outra linha.
+*/
+
+SET SERVEROUTPUT ON
+
+DECLARE
+
+nome varchar(30);
+cargo varchar(30);
+
+BEGIN
+FOR INDICE IN (SELECT ENAME , JOB FROM EMP) LOOP
+        nome := INDICE.ENAME;
+        cargo := INDICE.JOB;
+        DBMS_OUTPUT.PUT_LINE('nomes : ' || nome || '     Cargos : ' || cargo);
+END LOOP;
+END;
+
+
+/*
+
+QUESTAO 2
+
+(2 pontos) Crie um bloco PL/SQL que leia a tabela de empregados (EMP) e obtenha o
+nome do funcionário (ENAME), data de contratação do funcionário (HIREDATE) e cargo
+(JOB) de todos funcionários. Exiba o nome do funcionário em uma linha, o cargo do
+funcionário em outra linha e a data de contratação em outra linha no formato ‘DAY,
+DD/Month/YYYY’.
+*/
+
+SET SERVEROUTPUT ON
+
+DECLARE
+
+nome varchar(30);
+cargo varchar(30);
+dataa EMP.HIREDATE%type;
+
+
+BEGIN
+FOR INDICE IN (SELECT ENAME , JOB , HIREDATE FROM EMP) LOOP
+
+        nome := INDICE.ENAME;
+        cargo := INDICE.JOB;
+        dataa := INDICE.HIREDATE;
+        
+        DBMS_OUTPUT.PUT_LINE('nomes : ' || nome || '     Cargos : ' || cargo || ' Data ' || TO_CHAR(dataa,'fmDD "de" Month "de YYYY'));
+END LOOP;
+END;
+
+
+
+/*
+
+QUESTAO 3
+
+(2 pontos) Crie um bloco PL/SQL que leia a tabela de empregados (EMP) e obtenha o
+nome (ENAME), salário (SAL) e comissão (COMM) de todos funcionários. Com esses
+dados, gere um relatório que obedeça os critérios abaixo:
+? Se o valor do salário (SAL) somado ao valor da comissão (COMM) do
+funcionário for maior ou igual a 3000 exiba o nome e salário do funcionário
+com a mensagem “Ótimo salário”.
+? Se o valor salário somado ao valor da comissão for menor que 3000 exiba o
+nome e salário do funcionário com a mensagem “Salário”.
+*/
+
+
+SET SERVEROUTPUT ON
+
+DECLARE
+
+v_nome  EMP.ENAME%TYPE;
+v_sal EMP.SAL%TYPE;
+v_comm EMP.COMM%type;
+v_x EMP.COMM%TYPE;
+
+
+BEGIN
+FOR INDICE IN (SELECT ENAME , SAL , COMM FROM EMP) LOOP
+
+        v_nome := INDICE.ENAME;
+        v_sal := INDICE.SAL;
+        v_comm := INDICE.COMM;
+        
+        v_x := v_sal + v_comm;
+        
+        if v_x >= 3000 then
+             DBMS_OUTPUT.PUT_LINE('Ótimo salário : ' ||v_nome);
+        else
+            if v_x < 3000 then
+            DBMS_OUTPUT.PUT_LINE('Nome : ' ||v_nome || ' Salario : ' || v_sal);
+        end if;
+    end if;
+    
+END LOOP;
+END;
+
+SELECT * FROM EMP;
+
+
+/*
+
+QUESTAO 4
+
+(4 pontos) Usando PL/SQL desenvolva um programa que gere um relatório que
+mostre o código do departamento (DEPTNO), o cargo do funcionário (JOB) e a
+soma do salário (SAL) de todos os empregados com aquele cargo naquele
+departamento.
+? Exiba a soma dos salários daquele departamento antes de começar a
+exibir os dados do próximo departamento.
+? Exiba o total geral dos salários da empresa no final do relatório.
+A estrutura da tabela EMP pode ser observada no anexo.
+O relatório gerado deve ser similar ao modelo abaixo
+
+*/
+
+SET SERVEROUTPUT ON
+
+DECLARE
+
+V_DEPTNO EMP.DEPTNO%TYPE;
+V_JOB EMP.JOB%TYPE;
+V_SAL EMP.SAL%TYPE;
+
+BEGIN
+
+--1
+SELECT SAL , DEPTNO INTO  V_SAL , V_DEPTNO
+    FROM EMP
+    WHERE DEPTNO = 10 AND 
+      SAL = (SELECT MIN(SAL) FROM EMP WHERE DEPTNO = 10);
+    
+    DBMS_OUTPUT.put_line('DEPTNO : '  || V_DEPTNO);
+    DBMS_OUTPUT.PUT_LINE('SALARIO : ' || V_SAL);
+   
+   
+   --2
+   
+    FOR INDICE IN (SELECT SAL FROM EMP) LOOP
+    SELECT SUM(SAL) INTO V_SAL FROM EMP;
+    END LOOP;
+    
+    DBMS_OUTPUT.put_line('SOMA DOS SALARIOS DA EMPRESA : '  || V_SAL);
+    
+END;
+
+SELECT * FROM EMP;
