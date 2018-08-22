@@ -94,6 +94,7 @@ END;
 select fun_nome_veiculo('3213210') from dual;
 
 
+SELECT * FROM loc_pedido_locacao;
 /*
 
 4) Crie uma função chamada fun_val_med_loc_cliente que retorne o valor total médio gasto por determinado cliente. Caso não
@@ -103,6 +104,45 @@ exista o cliente cadastrado, ou ocorrer qualquer erro imprevisto, retornar o val
 
 -- loc_pedido_locacao
 
+create or replace function fun_val_med_loc_cliente (cod_cli in number)
+return number
+
+is
+ v_vl_total_medio number(5,2) := 0;
+begin
+  
+  FOR INDICE IN (SELECT NVL(AVG(VL_TOTAL),0) , CD_CLIENTE FROM LOC_PEDIDO_LOCACAO GROUP BY VL_TOTAL) LOOP
+      IF (INDICE.CD_CLIENTE = cod_cli) then
+            v_vl_total_medio := INDICE.VL_TOTAL;
+      END IF;
+    END LOOP;
+           return v_vl_total_medio;
+  
+end;
+
+select fun_val_med_loc_cliente(1) from dual;
+
+
+
+create or replace function fun_val_med_loc_cliente 
+(
+p_cd_cliente    loc_pedido_locacao.cd_cliente%type
+) return number
+is
+  v_valor   number;
+begin
+  select trunc(nvl(avg(vl_total),0))
+    into v_valor
+    from loc_pedido_locacao
+   where cd_cliente = p_cd_cliente;
+  return v_valor;
+exception
+  when others then
+    return 0;
+end;
+
+
+select FUN_VAL_MED_LOC_CLIENTE(1) from dual
 -----------------------------------------------------------------------------------------------------------------------------------
 
 /*
@@ -113,6 +153,31 @@ total gasto pelo cliente e utilize a tabela abaixo, que determina em qual faixa 
 final do processamento, confirme as transações realizadas e cria uma instrução SQL à parte que verifica se a estrela gerada
 para cada cliente está de acordo com as locações hoje cadastradas.
 */
+
+SELECT * FROM LOC_CLIENTE;
+
+set serveroutput on
+
+CREATE OR REPLACE PROCEDURE prc_gera_estrelas_cli(cd_cliente in number)
+
+IS
+
+  V_RECEBE_FUNC number := fun_val_med_loc_cliente(1);
+  V_MSG_ERROR VARCHAR2(255) := 'ESTRELA INVALIDA';
+  V_VALUE number := 0;
+  
+  BEGIN
+    FOR INDICE IN (nr_estrelas , cd_cliente) from LOC_CLIENTE loop
+      IF INDICE.NR_ESTRLA < 5 THEN
+          return V_MSG_ERROR;
+      ELSE
+        return V_RECEBE_FUNC
+        
+  END;
+
+
+
+
 
 
 
