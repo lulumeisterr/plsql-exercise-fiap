@@ -1,0 +1,71 @@
+CREATE TABLE LOG_EVENTOS (
+ID NUMBER, 
+EVENTO VARCHAR2(100), 
+OSUSER VARCHAR2(100), 
+ORACLEUSER VARCHAR2(100), 
+DATA DATE
+
+);
+
+create sequence SQ_LOG_EVENTOS
+minvalue 1
+maxvalue 9999999999
+start with 1
+increment by 1
+nocache
+cycle;
+
+DROP TABLE LOG_EVENTOS;
+DROP SEQUENCE SQ_LOG_EVENTOS;
+
+SELECT * FROM LOG_EVENTOS;
+
+
+
+/*
+1) Desenvolver uma trigger chamada TRG_GRUPO_BFUP que controlará todos os updates realizados na tabela LOC_GRUPO.
+Caso um update tenha sido realizado, inserir na tabela de controle de eventos abaixo:
+*/
+
+SELECT * FROM LOC_GRUPO;
+SET SERVER OUTPUT ON
+
+UPDATE LOC_GRUPO SET DS_GRUPO = 'CARRO 2071' WHERE CD_GRUPO = 0; 
+
+CREATE OR REPLACE TRIGGER TRG_GRUPO_BFUP 
+  AFTER UPDATE ON LOC_GRUPO
+      for each row
+        BEGIN
+            IF UPDATING THEN
+               INSERT INTO LOG_EVENTOS VALUES(SQ_LOG_EVENTOS.Nextval,
+                                        'JAVASCRIPT',SYS_CONTEXT('USERENV', 'OS_USER'),
+                                        USER, TO_DATE('2018-10-10', 'YYYY-MM-DD'));
+                                        
+             DBMS_OUTPUT.PUT_LINE('SUA TABELA FUI ATUALIZADA ' || :old.ds_grupo || ' Depois =>' || :new.ds_grupo);
+             
+          END IF;
+END;
+  
+  
+/*
+2) Desenvolver um gatilho que será disparado antes do evento de atualização da coluna VL_LOCACAO_DIARIA na tabela LOC_GRUPO.
+Esta trigger deverá checar se o valor antigo for igual ao novo, provocar o erro utilizando o raise_application_error informando que os valores são iguais, e caso seja menor, não permitir a operação.
+Tratar os demais erros para que nunca pare a execução, exceto nas descritas acima.
+*/
+
+CREATE OR REPLACE TRIGGER TRG_LOCACAO
+  BEFORE UPDATE OF VL_LOCACAO_DIARIA ON LOC_GRUPO
+    FOR EACH ROW
+        BEGIN
+              IF :old.vl_locacao_diaria = :new.vl_locacao_diaria THEN
+                  RAISE_APPLICATION_ERROR( -20001, ' ERRO NA TRIGGER TRG VALORES IGUAIS' );
+                 ELSE
+                  RAISE_APPLICATION_ERROR( -20001, ' TRG FECHADA' );
+              END IF;
+      END;
+
+
+
+
+
+
