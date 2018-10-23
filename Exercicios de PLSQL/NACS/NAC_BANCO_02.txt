@@ -23,7 +23,7 @@ SELECT * FROM LOG_EVENTOS;
 
 
 /*
-1) Desenvolver uma trigger chamada TRG_GRUPO_BFUP que controlar· todos os updates realizados na tabela LOC_GRUPO.
+1) Desenvolver uma trigger chamada TRG_GRUPO_BFUP que controlar√° todos os updates realizados na tabela LOC_GRUPO.
 Caso um update tenha sido realizado, inserir na tabela de controle de eventos abaixo:
 */
 
@@ -34,7 +34,7 @@ UPDATE LOC_GRUPO SET DS_GRUPO = 'CARRO 2071' WHERE CD_GRUPO = 0;
 
 CREATE OR REPLACE TRIGGER TRG_GRUPO_BFUP 
   AFTER UPDATE ON LOC_GRUPO
-      for each row
+      for each row 
         BEGIN
             IF UPDATING THEN
                INSERT INTO LOG_EVENTOS VALUES(SQ_LOG_EVENTOS.Nextval,
@@ -48,24 +48,31 @@ END;
   
   
 /*
-2) Desenvolver um gatilho que ser· disparado antes do evento de atualizaÁ„o da coluna VL_LOCACAO_DIARIA na tabela LOC_GRUPO.
-Esta trigger dever· checar se o valor antigo for igual ao novo, provocar o erro utilizando o raise_application_error informando que os valores s„o iguais, e caso seja menor, n„o permitir a operaÁ„o.
-Tratar os demais erros para que nunca pare a execuÁ„o, exceto nas descritas acima.
+2) Desenvolver um gatilho que ser√° disparado antes do evento de atualiza√ß√£o da coluna VL_LOCACAO_DIARIA na tabela LOC_GRUPO.
+Esta trigger dever√° checar se o valor antigo for igual ao novo, provocar o erro utilizando o raise_application_error informando que os valores s√£o iguais, e caso seja menor, n√£o permitir a opera√ß√£o.
+Tratar os demais erros para que nunca pare a execu√ß√£o, exceto nas descritas acima.
 */
 
 CREATE OR REPLACE TRIGGER TRG_LOCACAO
   BEFORE UPDATE OF VL_LOCACAO_DIARIA ON LOC_GRUPO
     FOR EACH ROW
+     DECLARE
+        V_VL_MENOR exception;
+        V_VL_IGUAL exception;
         BEGIN
               IF :old.vl_locacao_diaria = :new.vl_locacao_diaria THEN
-                  RAISE_APPLICATION_ERROR( -20001, ' ERRO NA TRIGGER TRG VALORES IGUAIS' );
+                  --RAISE_APPLICATION_ERROR( -20001, ' ERRO NA TRIGGER TRG VALORES IGUAIS' );
+                  raise V_VL_IGUAL;
                  ELSE
-                  RAISE_APPLICATION_ERROR( -20001, ' TRG FECHADA' );
+                  --RAISE_APPLICATION_ERROR( -20001, ' TRG FECHADA' );
+                  raise V_VL_MENOR;
               END IF;
+          EXCEPTION
+            when V_VL_MENOR THEN
+              RAISE_APPLICATION_ERROR( -20001, ' ERRO NA TRIGGER TRG VALORES MENOR' );
+            when V_VL_IGUAL THEN
+              RAISE_APPLICATION_ERROR( -20002, ' ERRO NA TRIGGER TRG VALORES IGUAIS' );
+            when others then
+              null;
       END;
-
-
-
-
-
-
+    
